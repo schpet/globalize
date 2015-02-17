@@ -221,4 +221,13 @@ ActiveRecord::Schema.define do
     t.references :post
     t.string :file_type
   end
+
+  create_table :questions, :force => true do |t|
+  end
+
+  create_table :question_translations, :force => true do |t|
+    t.string     :locale
+    t.references :question
+    t.string     :title, null: false
+  end
 end

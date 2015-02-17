@@ -151,7 +151,9 @@ module Globalize
 
       def save(*)
         Globalize.with_locale(read_attribute(:locale) || I18n.default_locale) do
-          super
+          without_fallbacks do
+            super
+          end
         end
       end
 
@@ -194,6 +196,15 @@ module Globalize
           yield
         end
       end
+
+      def without_fallbacks
+        before = self.fallbacks_for_empty_translations
+        self.fallbacks_for_empty_translations = false
+        yield
+      ensure
+        self.fallbacks_for_empty_translations = before
+      end
+
     end
   end
 end
